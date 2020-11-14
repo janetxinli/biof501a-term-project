@@ -3,3 +3,6 @@
 .SRR12827773.fastq.gz.icloud
 data
 fastqc
+spades
+*.out
+readme
