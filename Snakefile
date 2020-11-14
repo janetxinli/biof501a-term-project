@@ -28,8 +28,14 @@ rule fastqc:
         cd ../
         """
 
-# rule spades:
-#     input:
-#         r1=rules.download_data.output.r1,
-#         r2=rules.download_data.output.r2
-#     output:
+rule spades:
+    input:
+        r1=rules.download_data.output.r1,
+        r2=rules.download_data.output.r2
+    params:
+        outdir="spades"
+    output:
+        "{outdir}/scaffolds.fasta",
+        "{outdir}/contigs.fasta"
+    shell:
+        "spades.py -o spades -1 {input.r1} -2 {input.r2}"
