@@ -1,0 +1,13 @@
+Locus Tag	Gene Name	Product Description	Strain Name	Accession	GO Term	Namespace	GO Evidence Code	Evidence Ontology ECO Code	Evidence Ontology Term	Similar To \ Binds To	PMID
+PA0527.1	rsmY	regulatory RNA RsmY	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000315	mutant phenotype evidence used in manual assertion		PMID:16885472
+PA0905	rsmA	RsmA	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000315	mutant phenotype evidence used in manual assertion		PMID:11673439
+PA1431	rsaL	regulatory protein RsaL	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IDA	ECO:0000314	direct assay evidence used in manual assertion		PMID:10094696
+PA1898	qscR	quorum-sensing control repressor	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IDA	ECO:0000314	direct assay evidence used in manual assertion		PMID:16390453
+PA2587	pqsH	probable FAD-dependent monooxygenase	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IDA	ECO:0000002	direct assay evidence		
+PA3305.1	phrS	PhrS	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000315	mutant phenotype evidence used in manual assertion		PMID:21375594
+PA3621.1	rsmZ	regulatory RNA RsmZ	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000315	mutant phenotype evidence used in manual assertion		PMID:16885472
+PA4205	mexG	hypothetical protein	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IDA	ECO:0000002	direct assay evidence		
+PA4206	mexH	probable Resistance-Nodulation-Cell Division (RND) efflux membrane fusion protein precursor	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IDA	ECO:0000002	direct assay evidence		
+PA4944	hfq	Hfq	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000315	mutant phenotype evidence used in manual assertion		PMID:16468994
+PA5241	ppx	exopolyphosphatase	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000015	mutant phenotype evidence		PMID:24275100
+PA5332	crc	catabolite repression control protein	Pseudomonas aeruginosa PAO1 (Reference)	GO:0009372	quorum sensing	biological_process	IMP	ECO:0000315	mutant phenotype evidence used in manual assertion		PMID:20626455
