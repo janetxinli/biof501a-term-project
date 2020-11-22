@@ -24,6 +24,21 @@ def get_missense_genes(filename):
     return missense_genes
 
 
+ def read_gene_variants(filename):
+     """
+     Returns a set of all genes with variants from snpEff summary
+     geneId file.
+     """
+     vars = set()
+     with open(filename) as vars:
+        for line in vars:
+            if line[0] == "#":
+                continue
+            else:
+                vars.add(var_info[1])
+    return vars
+
+
 def get_all_go_genes(go_id):
     """Returns a set of all genes annotated with go_id."""
     params = {"selectedFields": "symbol", "goId": go_id}
@@ -59,9 +74,10 @@ def get_args():
 
 def main():
     args = get_args()
-    missense_genes = get_missense_genes(args.vars)
+    # missense_genes = get_missense_genes(args.vars)
+    genes_with_variants = read_gene_variants(args.vars)
     go_genes = get_all_go_genes(args.go)
-    matching_genes = find_matching_genes(missense_genes, go_genes)
+    matching_genes = find_matching_genes(genes_with_variants, go_genes)
     print(matching_genes)
 
 
