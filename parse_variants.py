@@ -24,19 +24,20 @@ def get_missense_genes(filename):
     return missense_genes
 
 
- def read_gene_variants(filename):
+def read_gene_variants(filename):
      """
      Returns a set of all genes with variants from snpEff summary
      geneId file.
      """
-     vars = set()
+     genes = set()
      with open(filename) as vars:
         for line in vars:
             if line[0] == "#":
                 continue
             else:
-                vars.add(var_info[1])
-    return vars
+                var_info = line.split("\t")
+                genes.add(var_info[1])
+     return genes
 
 
 def get_all_go_genes(go_id):
@@ -46,8 +47,22 @@ def get_all_go_genes(go_id):
     if not r.ok:
         r.raise_for_status()
         sys.exit(1)
-    associated_genes = set(r.text.strip("SYMBOL\n").split("\n"))
+    associated_genes = [i.upper() for i in r.text.strip("SYMBOL\n").split("\n")]
     return associated_genes
+
+
+def read_qs_genes(go_gene_file):
+    """
+    Returns a dictionary of Pseudomonas genes with a certain GO accession from a tsv file
+    and associated information.
+    """
+    gene_info = {}  # locus_tag -> (gene_name, product_description)
+    with open(go_gene_file) as genes:
+        genes.readline()
+        for line in genes:
+            line_content = line.strip().split("\t")
+            gene_info[line_content[0]] = (line_content[1], line_content[2])
+    return gene_info
 
 
 def find_matching_genes(query_genes, go_genes):
@@ -66,19 +81,25 @@ def get_args():
     parser.add_argument("vars",
                         type=str,
                         help="snpEff annotated variants tsv file with geneId")
-    parser.add_argument("go",
+    parser.add_argument("qs",
                         type=str,
-                        help="Gene Ontology ID query")
+                        help="Tsv file containing PAO1 genes with the 'quorum sensing' GO accession")
     return parser.parse_args()
 
 
 def main():
     args = get_args()
     # missense_genes = get_missense_genes(args.vars)
+    pao_qs_genes = read_qs_genes(args.qs)
     genes_with_variants = read_gene_variants(args.vars)
-    go_genes = get_all_go_genes(args.go)
-    matching_genes = find_matching_genes(genes_with_variants, go_genes)
-    print(matching_genes)
+    for gene in genes_with_variants:
+        if gene in pao_qs_genes:
+            print(gene)
+    # print(genes_with_variants)
+    # go_genes = get_all_go_genes(args.go)
+    # matching_genes = find_matching_genes(genes_with_variants, go_genes)
+    # print("go_id\tnum_genes")
+    # print("{0}\t{1}".format(args.go, len(matching_genes)))
 
 
 if __name__ == "__main__":
