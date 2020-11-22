@@ -1,4 +1,3 @@
-READS = ["1", "2"] 
 # get # threads as a param from the command line
 
 rule download_ref:
@@ -18,6 +17,7 @@ rule download_reads:
         """
         fastq-dump SRR12820667 --split-files -O data
         """
+
 rule bwa_mem:
     input:
         ref=rules.download_ref.output.ref,
@@ -58,8 +58,19 @@ rule annotate_variants:
         vcf=rules.call_variants.output.vcf
     output:
         snpEff="variants.named.snpEff.vcf",
-        csv="variants.snpEff.summary.csv"
+        genes="variants.snpEff.summary.genes.txt"
     shell:
         """
         snpEff ann -csvStats {output.csv} Pseudomonas_aeruginosa_pao1 {input.vcf} > {output.snpEff}
+        """
+
+rule find_qs_variants:
+    input:
+        genes=rules.annotate_variants.output.genes,
+        ref_qs="PAO1_quorum_sensing_genes.tsv"
+    output:
+        qs_var="qs_gene_variants.tsv"
+    shell:
+        """
+        ./parse_variants.py {input.genes} {input.ref_qs} > {output.qs_var}
         """
