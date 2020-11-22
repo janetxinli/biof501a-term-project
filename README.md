@@ -1,3 +1,3 @@
 # BIOF501A Term Project
-## Bacterial De Novo Genome Assembly Pipeline
+## Bacterial Variant Calling and Annotation Pipeline
 ### By: Janet Li
