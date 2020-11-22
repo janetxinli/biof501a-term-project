@@ -27,7 +27,7 @@ def get_missense_genes(filename):
 def get_all_go_genes(go_id):
     """Returns a set of all genes annotated with go_id."""
     params = {"selectedFields": "symbol", "goId": go_id}
-    r = requests.get(ANNOTATIONS, ACCEPT, params=params)
+    r = requests.get(ANNOTATIONS, headers=ACCEPT, params=params)
     if not r.ok:
         r.raise_for_status()
         sys.exit(1)
