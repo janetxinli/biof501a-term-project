@@ -1,4 +1,8 @@
-# get # threads as a param from the command line
+rule all:
+    input:
+        "PAO1.variant_types.png",
+        "PAO1.qs_variants.tsv",
+        "PAO1.qs_variants.png"
 
 rule download_ref:
     output:
@@ -25,10 +29,11 @@ rule bwa_mem:
         r2=rules.download_reads.output.r2
     output:
         bam="alignments.sorted.bam"
+    threads: 8
     shell:
         """
         bwa index {input.ref}
-        bwa mem {input.ref} {input.r1} {input.r2} | samtools view -u -F 4 -q 30 | samtools sort -O BAM  -o {output.bam}
+        bwa mem -t {threads} {input.ref} {input.r1} {input.r2} | samtools view -u -F 4 -q 30 -@ {threads} | samtools sort -O BAM  -o {output.bam} -@ {threads}
         """
 
 rule bwa_index:
@@ -64,13 +69,23 @@ rule annotate_variants:
         snpEff ann -csvStats {output.csv} Pseudomonas_aeruginosa_pao1 {input.vcf} > {output.snpEff}
         """
 
-rule find_qs_variants:
+rule parse_variants:
     input:
         genes=rules.annotate_variants.output.genes,
         ref_qs="PAO1_quorum_sensing_genes.tsv"
     output:
-        qs_var="qs_gene_variants.tsv"
+        var_plot="PAO1.variant_types.png",
+        qs_tsv="PAO1.qs_variants.tsv",
+        qs_plot="PAO1.qs_variants.png"
     shell:
         """
-        ./parse_variants.py {input.genes} {input.ref_qs} > {output.qs_var}
+        ./parse_variants.py {input.genes} {input.ref_qs}
+        """
+
+rule make_dag:
+    output:
+        dag="snakemake_workflow_dag.png"
+    shell:
+        """
+        snakemake parse_variants --dag | dot -Tpng > {output.dag}
         """

@@ -89,7 +89,7 @@ def plot_var_counts(variant_counts, prefix):
     bar.tick_params(labelsize=15)
     bar_plot = bar.get_figure()
     bar_plot.savefig(outfile, bbox_inches="tight")
-    bar_plot.close()
+    bar_plot.clf()
 
 
 def plot_qs_variants(qs_variants, prefix):
@@ -104,7 +104,6 @@ def plot_qs_variants(qs_variants, prefix):
     qs.tick_params(labelsize=15)
     qs_plot = qs.get_figure()
     qs_plot.savefig(outfile, bbox_inches="tight")
-    qs_plot.close()
 
 
 def get_args():
@@ -131,7 +130,7 @@ def main():
     variant_counts = count_variant_types(genes_with_variants)
     sns.set_theme(style="whitegrid")
     # Plot variant counts
-    # plot_var_counts(variant_counts, args.prefix)
+    plot_var_counts(variant_counts, args.prefix)
     # Find QS genes with variants
     qs_gene_variants = read_qs_genes(args.qs)
     # Print to tsv file
