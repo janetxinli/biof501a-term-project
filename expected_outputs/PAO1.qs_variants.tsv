@@ -1,0 +1,9 @@
+locus_id	gene_name	mutation_type	product_description
+PA5332	crc	downstream_gene_variant	catabolite repression control protein
+PA4205	mexG	downstream_gene_variant	hypothetical protein
+PA5241	ppx	downstream_gene_variant	exopolyphosphatase
+PA1431	rsaL	downstream_gene_variant	regulatory protein RsaL
+PA3621.1	rsmZ	downstream_gene_variant	regulatory RNA RsmZ
+PA4206	mexH	frameshift_variant	probable Resistance-Nodulation-Cell Division (RND) efflux membrane fusion protein precursor
+PA5241	ppx	upstream_gene_variant	exopolyphosphatase
+PA1898	qscR	upstream_gene_variant	quorum-sensing control repressor
