@@ -1,4 +1,4 @@
-name: biof501a
+name: term_project
 channels:
   - anaconda
   - bioconda
