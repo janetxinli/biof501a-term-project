@@ -76,7 +76,7 @@ def get_qs_variants(variants, qs_genes, prefix):
 def plot_var_counts(variant_counts, prefix):
     """Prints a bar plot of variant counts to a file."""
     outfile = prefix + ".variant_types.png"
-    bp = sns.barplot(y=variant_counts["type"], x=variant_counts["count"])
+    bp = sns.barplot(y=variant_counts["type"], x=variant_counts["count"], color="grey")
     bp.set(xscale="log")
     bp.set_xlabel(xlabel="Count", fontsize=15)
     bp.set_ylabel(ylabel="Variant Type", fontsize=15)
@@ -91,7 +91,7 @@ def plot_qs_variants(qs_variants, prefix):
     """Prints a histogram of variant types in quorum sensing genes."""
     outfile = prefix + ".qs_variants.png"
     qs_var_df = pd.DataFrame(qs_variants, columns=["mutation_type"])
-    qs = sns.histplot(qs_var_df, y="mutation_type", alpha=1)
+    qs = sns.histplot(qs_var_df, y="mutation_type", alpha=1, color="grey")
     qs.set_title("Quorum Sensing Gene Variant Types and Frequencies", fontsize=20)
     qs.set_xlabel("Count", fontsize=15)
     qs.set_ylabel("Variant Type", fontsize=15)
