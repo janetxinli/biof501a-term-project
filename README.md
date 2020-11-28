@@ -100,5 +100,58 @@ Your environment is now set up with all of the dependencies required for this pi
 
 ### Input
 
-### Ouput
+The main inputs of this pipeline are automatically downloaded to a new `data` directory in the first two steps of the pipeline. These inputs include:
 
+|File|Information|
+|---|---|
+|`GCF_000006765.1_ASM676v1_genomic.fna`|*Pseudomonas aeruginosa* strain PAO1 reference genome sequence|
+|`SRR12820667_1.fastq`|Sequencing reads (read 1) for AiiA-lactonase treated *P. aeruginosa* isolate|
+|`SRR12820667_2.fastq`|Sequencing reads (read 2) for AiiA-lactonase treated *P. aeruginosa* isolate|
+
+**Reference Genome**
+
+The reference genome sequence is stored in multi-line FASTA format. The assembly is a single contig (sequence), so the first like is the header:
+
+```
+>NC_002516.2 Pseudomonas aeruginosa PAO1, complete genome
+```
+
+Followed by several lines containing the assembly sequence. 
+
+**Sequencing reads**
+
+The *P. aeruginosa* isolate sequencing reads are paired-end 150 bp Illumina reads. The read pairs are stored in separate FASTQ files, which have the following format:
+
+```
+@read name
+TCCCTGC
++
+>>11A11
+```
+
+Each read and its corresponding metadata are stored in 4 lines, where the first line begins with `@`, followed by the read header, the second line is the actual DNA sequence of the read, the third line is a placeholder containing a `+` and the read header again (or something nothing), and the fouth contains the quality score for each sequence in the read.
+
+**PAO1 Quorum Sensing Genes**
+
+Another important input is the `PAO1_quorum_sensing_genes.tsv` file in the main directory. This file contains all PAO1 genes with the quorum sensing Gene Ontology annotation. It is used to determine which variants are in genes/regions involved in quorum sensing. This was downloaded from the [Pseudomonas database](https://www.pseudomonas.com/strain/show/107).
+
+Each row contains information for a single QS gene. There are several columns containing information about the genes, but the only important columns for this analyses are the Tocus Tag, Gene Name and Product Description.
+
+### Ouput
+- describe the format of the output including files and visualizations
+- treat this section like the results of a paper
+
+The major outputs of this pipeline are:
+- `variants.snpEff.summary.csv`: A comma-separated values (csv) file produced by `snpEff`, containing a broad summary of the variant types, effects and regions identified in the isolate.
+- `variants.snpEff.summary.genes.txt`: A plain text, tab-separated values file produced by `snpEff` containing the gene names and loci corresponding to the variants called by `bcftools`.
+- `variants.named.snpEff.vcf`: Variants and their annotated effects, produced by `snpEff`.
+- `PAO1.AiiA-lactonase-deficient.variant_effects.png`: A plot of all variant effects and their frequencies in the *P. aeruginosa* isolate.
+- `PAO1.AiiA-lactonase-deficient.qs_variants.tsv`: A tab-separated values (tsv) file containing variants in genes with the Quorum sensing Gene Ontology annotation. The columns include the locus ID, gene name, type of variant effect that occurred at that locus, and a description of the gene product.
+- `PAO1.AiiA-lactonase-deficient.qs_variants.png`: A plot of the QS variant effects and their frequencies.
+
+These main outputs can be found in the `expected_outputs` directory.
+
+Other intermediate outputs that aren't included in the directory are:
+- `alignments.sorted.bam`: A binary sequence alignment file containing the read alignments to the reference genome. The alignments are sorted by position.
+- `variants.named.vcf.gz`: Filtered variants called by `bcftools`, with the reference field renamed to `Chromosome` to match the `snpEff` database name.
+- Various index files for the reference genome created by `samtools` and `bwa`, required for some of the steps such as `bcftools call` and `bwa mem`.
