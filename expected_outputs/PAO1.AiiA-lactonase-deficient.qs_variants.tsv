@@ -1,4 +1,4 @@
-locus_id	gene_name	mutation_type	product_description
+locus_id	gene_name	variant_effect	product_description
 PA5332	crc	downstream_gene_variant	catabolite repression control protein
 PA4205	mexG	downstream_gene_variant	hypothetical protein
 PA5241	ppx	downstream_gene_variant	exopolyphosphatase

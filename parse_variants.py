@@ -58,13 +58,13 @@ def read_qs_genes(go_gene_file):
 def get_qs_variants(variants, qs_genes, prefix):
     """
     Prints variants in query_genes that are in qs_genes in tsv format to outfile.
-    Format: locus_id    gene_name   mutation_type   product_description
+    Format: locus_id    gene_name   variant_effect   product_description
     Also returns a list of mutation types corresponding to the qs gene variants.
     """
     outfile = prefix + ".qs_variants.tsv"
     qs_variants = []
     with open(outfile, "w+") as o:
-        print("locus_id\tgene_name\tmutation_type\tproduct_description", file=o)
+        print("locus_id\tgene_name\tvariant_effect\tproduct_description", file=o)
         for var_type in variants:
             for locus in variants[var_type]:
                 if locus in qs_genes:
@@ -75,12 +75,12 @@ def get_qs_variants(variants, qs_genes, prefix):
 
 def plot_var_counts(variant_counts, prefix):
     """Prints a bar plot of variant counts to a file."""
-    outfile = prefix + ".variant_types.png"
+    outfile = prefix + ".variant_effects.png"
     bp = sns.barplot(y=variant_counts["type"], x=variant_counts["count"], color="grey")
     bp.set(xscale="log")
     bp.set_xlabel(xlabel="Count", fontsize=15)
-    bp.set_ylabel(ylabel="Variant Type", fontsize=15)
-    bp.set_title("All Variant Types and Frequencies", fontsize=20)
+    bp.set_ylabel(ylabel="Variant Effect", fontsize=15)
+    bp.set_title("All Variant Effects and Frequencies", fontsize=20)
     bp.tick_params(labelsize=15)
     bp = bp.get_figure()
     bp.savefig(outfile, bbox_inches="tight")
@@ -90,11 +90,11 @@ def plot_var_counts(variant_counts, prefix):
 def plot_qs_variants(qs_variants, prefix):
     """Prints a histogram of variant types in quorum sensing genes."""
     outfile = prefix + ".qs_variants.png"
-    qs_var_df = pd.DataFrame(qs_variants, columns=["mutation_type"])
-    qs = sns.histplot(qs_var_df, y="mutation_type", alpha=1, color="grey")
-    qs.set_title("Quorum Sensing Gene Variant Types and Frequencies", fontsize=20)
+    qs_var_df = pd.DataFrame(qs_variants, columns=["variant_type"])
+    qs = sns.histplot(qs_var_df, y="variant_type", alpha=1, color="grey")
+    qs.set_title("Quorum Sensing Gene Variant Effects and Frequencies", fontsize=20)
     qs.set_xlabel("Count", fontsize=15)
-    qs.set_ylabel("Variant Type", fontsize=15)
+    qs.set_ylabel("Variant Effect", fontsize=15)
     qs.tick_params(labelsize=15)
     qs_plot = qs.get_figure()
     qs_plot.savefig(outfile, bbox_inches="tight")
@@ -112,8 +112,8 @@ def get_args():
                         help="Tsv file containing PAO1 genes with the 'quorum sensing' GO accession")
     parser.add_argument("-p", "--prefix",
                         type=str,
-                        default="PAO1",
-                        help="Prefix for output files to be printed to [PAO1]")
+                        default="PAO1.AiiA-lactonase-deficient",
+                        help="Prefix for output files to be printed to [PAO1.AiiA-lactonase-deficient]")
     return parser.parse_args()
 
 
