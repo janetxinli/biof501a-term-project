@@ -1,6 +1,8 @@
 # BIOF501A Term Project: Bacterial Variant Calling and Annotation Pipeline for Quorum Sensing Genes
 ## By: Janet Li
 
+![Image of Pseudomonas aeruginosa](Pseudomonas_aeruginosa.png "Pseudomonas aeruginosa")
+
 ### Background and Rationale
 
 The purpose of this pipeline is to call and annotate variants in the genome sequence of an AiiA-lactonase treated isolate of *Pseudomonas aeruginosa* strain PAO1 against the reference genome.
@@ -9,7 +11,7 @@ The purpose of this pipeline is to call and annotate variants in the genome sequ
 
 A major aspect of bacterial infection is cell-to-cell communication. Quorum sensing (QS) is the process of multi-cellular gene regulation through the production of signalling molecules. It is used by many bacteria, including *P. aeruginosa*. The production of these signalling molecules increases with cell density, and once cell density reaches a certain threshold, the QS system alters the expression of a subset of genes. QS genes differ between species and strains, but in *P. aeruginosa*, we are interested in the QS genes involved in virulence. Acylated homoserine lactone (AHL) is the most common QS signalling molecule in Gram-negative bacteria [(Venturi, 2006)](https://doi.org/10.1111/j.1574-6976.2005.00012.x). 
 
-AiiA-lactonase is an enzyme that degrades AHL. The isolate used in this pipeline was treated with Aiia-lactonase -- more information about the sample can be found [here](https://www.ncbi.nlm.nih.gov//bioproject/667949). The lack of AHL should theoretically reduce the abilities of a bacterial population to communicate among one another, therefore also reducing virulence. This treatment puts a selective pressure on *P. aeruginosa*, essentially selecting for individuals with mutations that allow them to evade the lack of AHL-mediated QS gene regulation. My hypothesis was that there would be at least one mutation in a quorum sensing-related gene. I created this pipeline to call, annotate and parse the genomic variants in the AiiA-lactonase treated isolate.
+AiiA-lactonase is an enzyme that degrades AHL. The isolate used in this pipeline was treated with Aiia-lactonase - more information about the sample can be found [here](https://www.ncbi.nlm.nih.gov//bioproject/667949). The lack of AHL should theoretically reduce the abilities of a bacterial population to communicate among one another, therefore also reducing virulence. This treatment puts a selective pressure on *P. aeruginosa*, essentially selecting for individuals with mutations that allow them to evade the lack of AHL-mediated QS gene regulation. My hypothesis was that there would be at least one mutation in a quorum sensing-related gene. I created this pipeline to call, annotate and parse the genomic variants in the AiiA-lactonase treated isolate.
 
 More specifically, this pipeline:
 1. Downloads the reference genome and sequencing reads
@@ -37,9 +39,12 @@ snpEff
 graphviz
 ```
 
-And the Python-specific dependencies are `pandas` and `seaborn`. Information about installation can be found in the [usage](#usage) section of this README.
+And the Python-specific dependencies are `pandas` and `seaborn` (which include `numpy` and `matplotlib`). Information about installation can be found in the [usage](#usage) section of this README.
 
 ### Usage
+- step by step usage details
+- installation (if necessary)
+- exact step by step usage with descriptive comments on what action is being performed in each step
 
 ### Input
 
