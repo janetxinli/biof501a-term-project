@@ -1,8 +1,13 @@
 .snakemake
 .vscode
-.SRR12827773.fastq.gz.icloud
+.ipynb_checkpoints
 data
-fastqc
-spades
+*.ipynb
 *.out
+*.bam
+*vcf*
+*.png
+*-log
+*.txt
+*.csv
 readme
