@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 
 import re
-import sys
 import argparse
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
 
 def read_gene_variants(filename):
@@ -15,14 +13,14 @@ def read_gene_variants(filename):
     variant_map = {}  # column_index -> variant_type
     variants = {}  #  type -> [locus_tag]
     var_re = "variants_effect_([a-z_]+)"
-    with open(filename) as vars:
-        vars.readline()  # Skip first line about formatting
-        header = vars.readline().strip().split("\t")
+    with open(filename) as variant_file:
+        variant_file.readline()  # Skip first line about formatting
+        header = variant_file.readline().strip().split("\t")
         for i, col in enumerate(header[8:]):  # Get mapping info for variants
             var_type = re.search(var_re, col).group(1)
             variant_map[i] = var_type
             variants[var_type] = []
-        for line in vars:
+        for line in variant_file:
             line_content = line.split("\t")
             var_info = line_content[8:]
             gene_id = line_content[1]
@@ -60,56 +58,53 @@ def read_qs_genes(go_gene_file):
 def get_qs_variants(variants, qs_genes, prefix):
     """
     Prints variants in query_genes that are in qs_genes in tsv format to outfile.
-    Also returns a list of mutation types corresponding to the qs gene variants.
     Format: locus_id    gene_name   mutation_type   product_description
+    Also returns a list of mutation types corresponding to the qs gene variants.
     """
     outfile = prefix + ".qs_variants.tsv"
-    mutation_type = []
-    # Check if file is writable
+    qs_variants = []
     with open(outfile, "w+") as o:
         print("locus_id\tgene_name\tmutation_type\tproduct_description", file=o)
         for var_type in variants:
             for locus in variants[var_type]:
                 if locus in qs_genes:
-                    mutation_type.append(var_type)
+                    qs_variants.append(var_type)
                     print(locus, qs_genes[locus][0], var_type, qs_genes[locus][1], sep="\t", file=o)
-    return mutation_type
+    return qs_variants
 
 
 def plot_var_counts(variant_counts, prefix):
     """Prints a bar plot of variant counts to a file."""
     outfile = prefix + ".variant_types.png"
-    # Check if file is writable
-    bar = sns.barplot(y=variant_counts["type"], x=variant_counts["count"],
-        color="grey", label="big")
-    bar.set(xscale="log")
-    bar.set_xlabel(xlabel="Count", fontsize=15)
-    bar.set_ylabel(ylabel="Variant Type", fontsize=15)
-    bar.set_title("Variant Types and Frequencies", fontsize=20)
-    bar.tick_params(labelsize=15)
-    bar_plot = bar.get_figure()
-    bar_plot.savefig(outfile, bbox_inches="tight")
-    bar_plot.clf()
+    bp = sns.barplot(y=variant_counts["type"], x=variant_counts["count"])
+    bp.set(xscale="log")
+    bp.set_xlabel(xlabel="Count", fontsize=15)
+    bp.set_ylabel(ylabel="Variant Type", fontsize=15)
+    bp.set_title("All Variant Types and Frequencies", fontsize=20)
+    bp.tick_params(labelsize=15)
+    bp = bp.get_figure()
+    bp.savefig(outfile, bbox_inches="tight")
+    bp.clf()
 
 
 def plot_qs_variants(qs_variants, prefix):
     """Prints a histogram of variant types in quorum sensing genes."""
     outfile = prefix + ".qs_variants.png"
-    # Check if file is writable
     qs_var_df = pd.DataFrame(qs_variants, columns=["mutation_type"])
-    qs = sns.histplot(qs_var_df, y="mutation_type", color="grey", alpha=1)
-    qs.set_title("Types of Quorum Sensing Gene Variants", fontsize=20)
+    qs = sns.histplot(qs_var_df, y="mutation_type", alpha=1)
+    qs.set_title("Quorum Sensing Gene Variant Types and Frequencies", fontsize=20)
     qs.set_xlabel("Count", fontsize=15)
     qs.set_ylabel("Variant Type", fontsize=15)
     qs.tick_params(labelsize=15)
     qs_plot = qs.get_figure()
     qs_plot.savefig(outfile, bbox_inches="tight")
+    qs_plot.clf()
 
 
 def get_args():
     """Get command line arguments."""
     parser = argparse.ArgumentParser(description="Parse variants in genes with a given Gene Ontology ID")
-    parser.add_argument("vars",
+    parser.add_argument("variant_genes",
                         type=str,
                         help="snpEff annotated variants tsv file with geneId")
     parser.add_argument("qs",
@@ -123,17 +118,19 @@ def get_args():
 
 
 def main():
+    """Run analysis."""
     args = get_args()
+    
     # Parse all variants
-    genes_with_variants = read_gene_variants(args.vars)
+    genes_with_variants = read_gene_variants(args.variant_genes)
     # Get variant counts
     variant_counts = count_variant_types(genes_with_variants)
-    sns.set_theme(style="whitegrid")
     # Plot variant counts
+    sns.set_theme(style="whitegrid")
     plot_var_counts(variant_counts, args.prefix)
     # Find QS genes with variants
     qs_gene_variants = read_qs_genes(args.qs)
-    # Print to tsv file
+    # Print QS variants to tsv
     qs_variant_counts = get_qs_variants(genes_with_variants, qs_gene_variants, args.prefix)
     # Plot QS variants
     plot_qs_variants(qs_variant_counts, args.prefix)
