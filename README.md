@@ -11,7 +11,9 @@ The purpose of this pipeline is to call and annotate variants in the genome sequ
 
 A major aspect of bacterial infection is cell-to-cell communication. Quorum sensing (QS) is the process of multi-cellular gene regulation through the production of signalling molecules. It is used by many bacteria, including *P. aeruginosa*. The production of these signalling molecules increases with cell density, and once cell density reaches a certain threshold, the QS system alters the expression of a subset of genes. QS genes differ between species and strains, but in *P. aeruginosa*, we are interested in the QS genes involved in virulence. Acylated homoserine lactone (AHL) is the most common QS signalling molecule in Gram-negative bacteria [(Venturi, 2006)](https://doi.org/10.1111/j.1574-6976.2005.00012.x). 
 
-AiiA-lactonase is an enzyme that degrades AHL. The isolate used in this pipeline was treated with Aiia-lactonase - more information about the sample can be found [here](https://www.ncbi.nlm.nih.gov//bioproject/667949). The lack of AHL should theoretically reduce the abilities of a bacterial population to communicate among one another, therefore also reducing virulence. This treatment puts a selective pressure on *P. aeruginosa*, essentially selecting for individuals with mutations that allow them to evade the lack of AHL-mediated QS gene regulation. My hypothesis was that there would be at least one mutation in a quorum sensing-related gene. I created this pipeline to call, annotate and parse the genomic variants in the AiiA-lactonase treated isolate.
+AiiA-lactonase is an enzyme that degrades AHL. The isolate used in this pipeline was treated with Aiia-lactonase - more information about the sample can be found [here](https://www.ncbi.nlm.nih.gov//bioproject/667949). The lack of AHL should theoretically reduce the abilities of a bacterial population to communicate among one another, therefore also reducing virulence. A previous study has shown that adding AiiA-lactonase to casein broth cultures impaired the growth of *P aeruginosa* [(Kostylev et al., 2019)](https://doi.org/10.1073/pnas.1819796116). This treatment therefore puts a selective pressure on *P. aeruginosa*, essentially selecting for individuals with mutations that allow them to evade the lack of AHL-mediated growth and/or QS gene regulation. My hypothesis was simple: that there would be at least one mutation in a quorum sensing-related gene in this isolate. I created this pipeline to call, annotate and parse the genomic variants in the AiiA-lactonase treated isolate.
+
+By identifying the genomic variants in this isolate and characterizing their biological effects, we can get a better sense of which *Pseudomonas aeruginosa* genes are required for growth and cell-to-cell communication in an AHL deficient environment. This can identify new genes involved in quorum sensing, and possibly point to new antibiotic targets.
 
 More specifically, this pipeline:
 1. Downloads the reference genome and sequencing reads
@@ -137,17 +139,16 @@ Another important input is the `PAO1_quorum_sensing_genes.tsv` file in the main 
 
 Each row contains information for a single QS gene. There are several columns containing information about the genes, but the only important columns for this analyses are the Tocus Tag, Gene Name and Product Description.
 
-### Ouput
-- describe the format of the output including files and visualizations
-- treat this section like the results of a paper
+---
 
+### Ouputs
 The major outputs of this pipeline are:
 - `variants.snpEff.summary.csv`: A comma-separated values (csv) file produced by `snpEff`, containing a broad summary of the variant types, effects and regions identified in the isolate.
 - `variants.snpEff.summary.genes.txt`: A plain text, tab-separated values file produced by `snpEff` containing the gene names and loci corresponding to the variants called by `bcftools`.
 - `variants.named.snpEff.vcf`: Variants and their annotated effects, produced by `snpEff`.
-- `PAO1.AiiA-lactonase-deficient.variant_effects.png`: A plot of all variant effects and their frequencies in the *P. aeruginosa* isolate.
-- `PAO1.AiiA-lactonase-deficient.qs_variants.tsv`: A tab-separated values (tsv) file containing variants in genes with the Quorum sensing Gene Ontology annotation. The columns include the locus ID, gene name, type of variant effect that occurred at that locus, and a description of the gene product.
-- `PAO1.AiiA-lactonase-deficient.qs_variants.png`: A plot of the QS variant effects and their frequencies.
+- `PAO1.AiiA-lactonase.variant_effects.png`: A plot of all variant effects and their frequencies in the *P. aeruginosa* isolate.
+- `PAO1.AiiA-lactonase.qs_variants.tsv`: A tab-separated values (tsv) file containing variants in genes with the Quorum sensing Gene Ontology annotation. The columns include the locus ID, gene name, type of variant effect that occurred at that locus, and a description of the gene product.
+- `PAO1.AiiA-lactonase.qs_variants.png`: A plot of the QS variant effects and their frequencies.
 
 These main outputs can be found in the `expected_outputs` directory.
 
@@ -155,3 +156,5 @@ Other intermediate outputs that aren't included in the directory are:
 - `alignments.sorted.bam`: A binary sequence alignment file containing the read alignments to the reference genome. The alignments are sorted by position.
 - `variants.named.vcf.gz`: Filtered variants called by `bcftools`, with the reference field renamed to `Chromosome` to match the `snpEff` database name.
 - Various index files for the reference genome created by `samtools` and `bwa`, required for some of the steps such as `bcftools call` and `bwa mem`.
+
+After running this pipeline, I was able to identify not one but eight quorum sensing variants in the AiiA-lactonase treated isolate. The majority of the variants were downstream gene variants, which may not necessarily have a functional impact, unless there are trans-regulatory factors that act in those regions. Two of the variants were upstream gene variants, which could play a role in gene regulation. A single gene, mexH, had a frameshift variant, which could very well render its product non-functional. mexH forms a portion of an efflux pump, which is a type of protein known to contribute to antibiotic resistance in *Pseudomonas Aeruginosa*.
