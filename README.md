@@ -41,10 +41,62 @@ graphviz
 
 And the Python-specific dependencies are `pandas` and `seaborn` (which include `numpy` and `matplotlib`). Information about installation can be found in the [usage](#usage) section of this README.
 
+---
+
 ### Usage
 - step by step usage details
 - installation (if necessary)
 - exact step by step usage with descriptive comments on what action is being performed in each step
+
+1. In the directory where you want to run this pipeline, clone this repository, then navigate into the directory:
+```bash
+git clone https://github.com/janetxinli/biof501a-term-project.git
+cd biof501a-term-project
+```
+
+2. Create a `conda` environment with the provided environment file (this will likely only work on a Mac/Unix environment):
+```bash
+conda env create --file environment.yml
+conda activate term_project
+```
+This will create and activate `conda` environment called `term_project`.
+
+If you're using a different operating system, you most likely won't able to create the environment from the file directly. In that case, check out the [supplementary steps](#supplementary-steps). `conda` environments don't translate well across operating systems, and you'll have to set up the environment manually (but don't worry, it's pretty simple!).
+
+3. Run the pipeline with `Snakemake`. You'll need to set the number of cores that `Snakemake` uses. For example, if you want to run the pipeline with two cores, specify `--cores 2`.
+
+```bash
+snakemake --cores 2
+```
+
+I like to use `nohup` so I can run other processes at the same time or log out without stopping the process:
+
+```bash
+nohup snakemake --cores 2 &> snakemake.out &
+```
+
+This will print all stdout and stderr messages to a file called `snakemake.out`.
+
+4. Compare your outputs with the files in the `expected_outputs` directory. More details in the [outputs](#outputs) section.
+
+#### Supplementary steps
+To create and activate a `conda` environment called `term_project` with all of the requirements manually:
+
+```bash
+conda env create --name term_project python=3.6
+conda activate term_project
+```
+
+Some of the other dependencies are not compatible with higher versions of Python, so make sure to specify the version. Next, to install the dependencies:
+
+```bash
+conda install -c bioconda snakemake sra-tools bwa samtools=1.9 bcftools snpEff openssl=1.0
+conda install -c anaconda graphviz seaborn
+```
+
+Your environment is now set up with all of the dependencies required for this pipeline.
+
+---
 
 ### Input
 
