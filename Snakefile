@@ -1,8 +1,8 @@
 rule all:
     input:
-        "PAO1.variant_types.png",
-        "PAO1.qs_variants.tsv",
-        "PAO1.qs_variants.png"
+        "PAO1.AiiA-lactonase.variant_effects.png",
+        "PAO1.AiiA-lactonase.qs_variants.tsv",
+        "PAO1.AiiA-lactonase.qs_variants.png"
 
 rule download_ref:
     output:
@@ -77,9 +77,9 @@ rule parse_variants:
         genes=rules.annotate_variants.output.genes,
         ref_qs="PAO1_quorum_sensing_genes.tsv"
     output:
-        var_plot="PAO1.AiiA-lactonase-deficient.variant_effects.png",
-        qs_tsv="PAO1.AiiA-lactonase-deficient.qs_variants.tsv",
-        qs_plot="PAO1.AiiA-lactonase-deficient.qs_variants.png"
+        var_plot="PAO1.AiiA-lactonase.variant_effects.png",
+        qs_tsv="PAO1.AiiA-lactonase.qs_variants.tsv",
+        qs_plot="PAO1.AiiA-lactonase.qs_variants.png"
     shell:
         """
         ./parse_variants.py {input.genes} {input.ref_qs}
