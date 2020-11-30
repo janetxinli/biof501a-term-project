@@ -41,7 +41,7 @@ snpEff v5.0
 graphviz v2.40.1
 ```
 
-And the Python-specific dependencies are `pandas` and `seaborn` (which include `numpy` and `matplotlib`). `conda` should be used for package installations and environment setup. Information about installation can be found in the [usage](#usage) section of this README.
+And the Python-specific dependencies are `pandas v1.1.3` and `seaborn v0.11.0` (which include `numpy` and `matplotlib`). [`conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html) should be used for package installations and environment setup.
 
 ---
 
@@ -53,14 +53,13 @@ git clone https://github.com/janetxinli/biof501a-term-project.git
 cd biof501a-term-project
 ```
 
-2. Create a `conda` environment with the provided environment file (this will likely only work on a Mac/Unix environment):
+2. Create a `conda` environment with the provided environment file (this will only work on a Mac/Unix environment; see the [supplementary steps](#supplementary-steps) for setup instructions in a Linux environment):
 ```bash
 conda env create --file environment.yml
 conda activate term_project
 ```
-This will create and activate `conda` environment called `term_project`.
 
-If you're using a different operating system, you most likely won't able to create the environment from the file directly. In that case, check out the [supplementary steps](#supplementary-steps). `conda` environment exports do not translate well across operating systems, and you'll have to set up the environment manually.
+This will create and activate your `conda` environment called `term_project`.
 
 3. Run the pipeline with `Snakemake`. You'll need to set the number of cores that `Snakemake` uses with the `--cores` argument.
 ```bash
@@ -81,18 +80,20 @@ This will print all stdout and stderr messages to a file called `snakemake.out`.
 To create and activate a `conda` environment called `term_project` with all of the requirements manually:
 
 ```bash
-conda env create --name term_project python=3.6
+conda create --name term_project python=3.6
 conda activate term_project
 ```
 
 Some of the other dependencies are not compatible with higher versions of Python, so make sure to specify the version. Next, to install the dependencies:
 
 ```bash
-conda install -c bioconda snakemake sra-tools bwa samtools=1.9 bcftools snpEff openssl=1.0
-conda install -c anaconda graphviz seaborn
+conda install -c bioconda snakemake=3.13.3 sra-tools=2.8.0 bwa=0.7.17 samtools=1.9 bcftools=1.8 snpEff=5.0 openssl=1.0
+conda install -c anaconda graphviz=2.40.1 seaborn=0.11.0
 ```
 
-Your environment is now set up with all of the dependencies required for this pipeline.
+When prompted to proceed, press `y`.
+
+Your environment is now set up with all of the dependencies required for this pipeline!
 
 ---
 
@@ -152,7 +153,7 @@ Other intermediate outputs that aren't included in the directory are:
 - `variants.named.vcf.gz`: Filtered variants called by `bcftools`, with the reference field renamed to `Chromosome` to match the `snpEff` database name.
 - Various index files for the reference genome created by `samtools` and `bwa`, required for some of the steps such as `bcftools call` and `bwa mem`.
 
-After running this pipeline, I was able to identify not one but eight quorum sensing variants in the AiiA-lactonase treated isolate. The majority of the variants were downstream gene variants, which may not necessarily have a functional impact unless there are trans-regulatory factors that act in those regions. Two of the variants were upstream gene variants, which could play a role in gene regulation. A single gene, mexH, had a frameshift variant, which could render its product non-functional. mexH forms a portion of the MexGHI-OpmD efflux pump, which is a type of protein known to contribute to antibiotic resistance in *Pseudomonas aeruginosa* [(Aendekerk, Ghysels, Cornelis & Baysse, 2002)](https://doi.org/10.1099/00221287-148-8-2371).
+After running this pipeline, I was able to identify not one but eight quorum sensing variants in the AiiA-lactonase treated isolate (see table and graph below). The majority of the variants were downstream gene variants, which may not necessarily have a functional impact unless there are trans-regulatory factors that act in those regions. Two of the variants were upstream gene variants, which could play a role in gene regulation. A single gene, mexH, had a frameshift variant, which could render its product non-functional. mexH forms a portion of the MexGHI-OpmD efflux pump, which is a type of protein known to contribute to antibiotic resistance in the species [(Aendekerk, Ghysels, Cornelis & Baysse, 2002)](https://doi.org/10.1099/00221287-148-8-2371). This gene, and the biochemical products and/or genes it is known to interact with, would be interesting to explore further, either experimentally or in silico, to get a beter understanding of quorum sensing in *Pseudomonas aeruginosa*.
 
 |locus_id|gene_name|variant_effect|product_description|
 |---|---|---|---|
