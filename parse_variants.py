@@ -112,8 +112,8 @@ def get_args():
                         help="Tsv file containing PAO1 genes with the 'quorum sensing' GO accession")
     parser.add_argument("-p", "--prefix",
                         type=str,
-                        default="PAO1.AiiA-lactonase",
-                        help="Prefix for output files to be printed to [PAO1.AiiA-lactonase]")
+                        default="PAO1.A1",
+                        help="Prefix for output files to be printed to [PAO1.A1]")
     return parser.parse_args()
 
 

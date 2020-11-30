@@ -1,4 +1,4 @@
-# BIOF501A Term Project: Bacterial Variant Calling and Annotation Pipeline for Quorum Sensing Genes
+# BIOF501A Term Project: Variant Calling and Annotation Pipeline for *Pseudomonas aeruginosa* Quorum Sensing Genes
 ## By: Janet Li
 
 ![Image of Pseudomonas aeruginosa](Pseudomonas_aeruginosa.png "Pseudomonas aeruginosa")
@@ -73,7 +73,7 @@ nohup snakemake --cores 2 &> snakemake.out &
 
 This will print all stdout and stderr messages to a file called `snakemake.out`.
 
-4. Compare your outputs with the files in the `expected_outputs` directory. More details about the content and format of the output files can be found in the [outputs](#outputs) section.
+4. When the pipeline has finished running, compare your outputs with the files in the `expected_outputs` directory. More details about the content and format of the output files can be found in the [outputs](#outputs) section.
 
 #### Supplementary steps
 
@@ -139,18 +139,18 @@ Each row contains information for a single QS gene. There are several columns co
 ### Ouputs
 
 The major outputs of this pipeline are:
-- `variants.snpEff.summary.csv`: A comma-separated values (csv) file produced by `snpEff`, containing a broad summary of the variant types, effects and regions identified in the isolate.
-- `variants.snpEff.summary.genes.txt`: A plain text, tab-separated values file produced by `snpEff` containing the gene names and loci corresponding to the variants called by `bcftools`.
-- `variants.named.snpEff.vcf`: Variants and their annotated effects, produced by `snpEff`.
-- `PAO1.AiiA-lactonase.variant_effects.png`: A plot of all variant effects and their frequencies in the *P. aeruginosa* isolate.
-- `PAO1.AiiA-lactonase.qs_variants.tsv`: A tab-separated values (tsv) file containing variants in genes with the Quorum sensing Gene Ontology annotation. The columns include the locus ID, gene name, type of variant effect that occurred at that locus, and a description of the gene product.
-- `PAO1.AiiA-lactonase.qs_variants.png`: A plot of the QS variant effects and their frequencies.
+- `PAO1.A1.variants.snpEff.summary.csv`: A comma-separated values (csv) file produced by `snpEff`, containing a broad summary of the variant types, effects and regions identified in the isolate.
+- `PAO1.A1.variants.snpEff.summary.genes.txt`: A plain text, tab-separated values file produced by `snpEff` containing the gene names and loci corresponding to the variants called by `bcftools`.
+- `PAO1.A1.variants.named.snpEff.vcf`: Variants and their annotated effects, produced by `snpEff`.
+- `PAO1.A1.variant_effects.png`: A plot of all variant effects and their frequencies in the *P. aeruginosa* isolate.
+- `PAO1.A1.qs_variants.tsv`: A tab-separated values (tsv) file containing variants in genes with the Quorum sensing Gene Ontology annotation. The columns include the locus ID, gene name, type of variant effect that occurred at that locus, and a description of the gene product.
+- `PAO1.A1.qs_variants.png`: A plot of the QS variant effects and their frequencies.
 
 Examples of these output files can be found in the `expected_outputs` directory.
 
 Other intermediate outputs that aren't included in the directory are:
 - `alignments.sorted.bam`: A binary sequence alignment file containing the read alignments to the reference genome. The alignments are sorted by position.
-- `variants.named.vcf.gz`: Filtered variants called by `bcftools`, with the reference field renamed to `Chromosome` to match the `snpEff` database name.
+- `PAO1.A1.variants.named.vcf.gz`: Filtered variants called by `bcftools`, with the reference field renamed to `Chromosome` to match the `snpEff` database name.
 - Various index files for the reference genome created by `samtools` and `bwa`, required for some of the steps such as `bcftools call` and `bwa mem`.
 
 After running this pipeline, I was able to identify not one but eight quorum sensing variants in the AiiA-lactonase treated isolate (see table and graph below). The majority of the variants were downstream gene variants, which may not necessarily have a functional impact unless there are trans-regulatory factors that act in those regions. Two of the variants were upstream gene variants, which could play a role in gene regulation. A single gene, mexH, had a frameshift variant, which could render its product non-functional. mexH forms a portion of the MexGHI-OpmD efflux pump, which is a type of protein known to contribute to antibiotic resistance in the species [(Aendekerk, Ghysels, Cornelis & Baysse, 2002)](https://doi.org/10.1099/00221287-148-8-2371). This gene, and the biochemical products and/or genes it is known to interact with, would be interesting to explore further, either experimentally or in silico, to get a beter understanding of quorum sensing in *Pseudomonas aeruginosa*.
@@ -166,4 +166,4 @@ After running this pipeline, I was able to identify not one but eight quorum sen
 |PA5241|ppx|upstream_gene_variant|exopolyphosphatase|
 |PA1898|qscR|upstream_gene_variant|quorum-sensing control repressor|
 
-![Quorum sensing related variants in isolate A1](expected_outputs/PAO1.AiiA-lactonase.qs_variants.png "Bar chart of quorum sensing variant frequencies")
+![Quorum sensing related variants in isolate A1](expected_outputs/PAO1.A1.qs_variants.png "Bar chart of quorum sensing variant frequencies")

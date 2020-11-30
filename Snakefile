@@ -1,8 +1,8 @@
 rule all:
     input:
-        "PAO1.AiiA-lactonase.variant_effects.png",
-        "PAO1.AiiA-lactonase.qs_variants.tsv",
-        "PAO1.AiiA-lactonase.qs_variants.png"
+        "PAO1.A1.variant_effects.png",
+        "PAO1.A1.qs_variants.tsv",
+        "PAO1.A1.qs_variants.png"
 
 rule download_ref:
     output:
@@ -52,21 +52,21 @@ rule call_variants:
         ref=rules.download_ref.output.ref,
         idx=rules.samtools_faidx.output.idx
     output:
-        vcf="variants.named.vcf.gz"
+        vcf="PAO1.A1.variants.named.vcf.gz"
     threads: 8
     shell:
         """
-        bcftools mpileup -Ou -f {input.ref} {input.bam} | bcftools call -Ou -mv | bcftools filter -e 'QUAL<30 | DP<20' --threads {threads} -Oz > variants.vcf.gz
-        gunzip -c variants.vcf.gz | sed -E 's/^NC_002516.2/Chromosome/g' | gzip > {output.vcf}
+        bcftools mpileup -Ou -f {input.ref} {input.bam} | bcftools call -Ou -mv | bcftools filter -e 'QUAL<30 | DP<20' --threads {threads} -Oz > PAO1.A1.variants.vcf.gz
+        gunzip -c PAO1.A1.variants.vcf.gz | sed -E 's/^NC_002516.2/Chromosome/g' | gzip > {output.vcf}
         """
 
 rule annotate_variants:
     input:
         vcf=rules.call_variants.output.vcf
     output:
-        snpEff="variants.named.snpEff.vcf",
-        genes="variants.snpEff.summary.genes.txt",
-        csv="variants.snpEff.summary.csv"
+        snpEff="PAO1.A1.variants.named.snpEff.vcf",
+        genes="PAO1.A1.variants.snpEff.summary.genes.txt",
+        csv="PAO1.A1.variants.snpEff.summary.csv"
     shell:
         """
         snpEff ann -csvStats {output.csv} -geneId Pseudomonas_aeruginosa_pao1 {input.vcf} > {output.snpEff}
@@ -77,9 +77,9 @@ rule parse_variants:
         genes=rules.annotate_variants.output.genes,
         ref_qs="PAO1_quorum_sensing_genes.tsv"
     output:
-        var_plot="PAO1.AiiA-lactonase.variant_effects.png",
-        qs_tsv="PAO1.AiiA-lactonase.qs_variants.tsv",
-        qs_plot="PAO1.AiiA-lactonase.qs_variants.png"
+        var_plot="PAO1.A1.variant_effects.png",
+        qs_tsv="PAO1.A1.qs_variants.tsv",
+        qs_plot="PAO1.A1.qs_variants.png"
     shell:
         """
         ./parse_variants.py {input.genes} {input.ref_qs}
