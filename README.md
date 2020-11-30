@@ -150,8 +150,9 @@ Examples of these output files can be found in the `expected_outputs` directory.
 
 Other intermediate outputs that aren't included in the directory are:
 - `alignments.sorted.bam`: A binary sequence alignment file containing the read alignments to the reference genome. The alignments are sorted by position.
-- `PAO1.A1.variants.named.vcf.gz`: Filtered variants called by `bcftools`, with the reference field renamed to `Chromosome` to match the `snpEff` database name.
+- `PAO1.A1.variants.named.vcf.gz`: Filtered variants called by `bcftools` (pre-annotation), with the reference field renamed to `Chromosome` to match the `snpEff` database name.
 - Various index files for the reference genome created by `samtools` and `bwa`, required for some of the steps such as `bcftools call` and `bwa mem`.
+- `snpEff_summary.html`: A visual summary of the annotated variants created by `snpEff` that can be viewed on a web browser.
 
 After running this pipeline, I was able to identify not one but eight quorum sensing variants in the AiiA-lactonase treated isolate (see table and graph below). The majority of the variants were downstream gene variants, which may not necessarily have a functional impact unless there are trans-regulatory factors that act in those regions. Two of the variants were upstream gene variants, which could play a role in gene regulation. A single gene, mexH, had a frameshift variant, which could render its product non-functional. mexH forms a portion of the MexGHI-OpmD efflux pump, which is a type of protein known to contribute to antibiotic resistance in the species [(Aendekerk, Ghysels, Cornelis & Baysse, 2002)](https://doi.org/10.1099/00221287-148-8-2371). This gene, and the biochemical products and/or genes it is known to interact with, would be interesting to explore further, either experimentally or in silico, to get a beter understanding of quorum sensing in *Pseudomonas aeruginosa*.
 
