@@ -101,13 +101,19 @@ Your environment is now set up with all of the dependencies required for this pi
 
 The input sequence data are automatically downloaded to a new `data` directory in the first two steps of the pipeline. These inputs include:
 
-|File|Details|Accession|
-|---|---|---|
-|`GCF_000006765.1_ASM676v1_genomic.fna`|*Pseudomonas aeruginosa* strain PAO1 reference genome sequence|Genbank NC_002516|
-|`SRR12820667_1.fastq`|Sequencing reads (read 1) for AiiA-lactonase treated *P. aeruginosa* isolate A1|SRA SRR12820667|
-|`SRR12820667_2.fastq`|Sequencing reads (read 2) for AiiA-lactonase treated *P. aeruginosa* isolate A1|SRA SRR12820667|
+|File|Details|Source|Accession|
+|---|---|---|---|
+|`GCF_000006765.1_ASM676v1_genomic.fna`|*Pseudomonas aeruginosa* strain PAO1 reference genome sequence|Genbank|NC_002516|
+|`SRR12820667_1.fastq`|Sequencing reads (read 1) for AiiA-lactonase treated *P. aeruginosa* isolate A1|SRA|SRR12820667|
+|`SRR12820667_2.fastq`|Sequencing reads (read 2) for AiiA-lactonase treated *P. aeruginosa* isolate A1|SRA|SRR12820667|
 
-**Reference Genome**
+**PAO1 Quorum Sensing Genes**
+
+Another important input is the `PAO1_quorum_sensing_genes.tsv` file, which can be found in the main directory. This file contains all PAO1 genes with the quorum sensing Gene Ontology annotation (GO:0009372). It is used to determine which variants are located in genes/regions involved in quorum sensing. This was downloaded from the [Pseudomonas database](https://www.pseudomonas.com/strain/show/107).
+
+Each row contains information for a single QS gene. There are several columns containing information about the genes, but the only important columns for this analyses are the Locus Tag, Gene Name and Product Description.
+
+**Reference genome file format**
 
 The reference genome sequence is stored in multi-line FASTA format. The assembly is a single contig (sequence), so the first line is the header:
 ```
@@ -116,7 +122,7 @@ The reference genome sequence is stored in multi-line FASTA format. The assembly
 
 Followed by several lines containing the assembly sequence.
 
-**Sequencing reads**
+**Sequencing reads file format**
 
 The *P. aeruginosa* isolate sequencing reads are paired-end 150 bp Illumina reads. The read pairs are stored in separate FASTQ files which have the following format:
 ```
@@ -126,13 +132,7 @@ TCCCTGC
 >>11A11
 ```
 
-Each read and its corresponding metadata are stored in 4 lines, where the first line begins with `@`, followed by the read header, the second line is the actual DNA sequence of the read, the third line is a placeholder containing a `+` and the read header again (or something nothing), and the fouth contains the quality score for each sequence in the read.
-
-**PAO1 Quorum Sensing Genes**
-
-Another important input is the `PAO1_quorum_sensing_genes.tsv` file in the main directory. This file contains all PAO1 genes with the quorum sensing Gene Ontology annotation (GO:0009372). It is used to determine which variants are located in genes/regions involved in quorum sensing. This was downloaded from the [Pseudomonas database](https://www.pseudomonas.com/strain/show/107).
-
-Each row contains information for a single QS gene. There are several columns containing information about the genes, but the only important columns for this analyses are the Locus Tag, Gene Name and Product Description.
+Each read and its corresponding metadata are stored in 4 lines, where the first line begins with `@`, followed by the read header, the second line is the actual DNA sequence of the read, the third line is a placeholder containing a `+` and the read header again (or sometimes nothing), and the fouth contains the quality score for each sequence in the read.
 
 ---
 
